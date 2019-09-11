@@ -1,0 +1,50 @@
+%run "./Includes/Classroom-Setup"
+
+path ="/mnt/training/EDGAR-Log-20170329/EDGAR-Log-20170329.csv"
+
+logDF = (spark.read.option('header', True).csv(path).sample(withReplacement = False, fraction=0.3, seed = 3))
+
+from pyspark.sql.functions import col
+
+serverErrorDF = (logDF
+  .filter((col("code") >= 500))
+  .select("date", "time", "extention", "code")
+)
+
+display(serverErrorDF)
+
+from pyspark.sql.functions import from_utc_timestamp, hour, col
+
+countsDF = (serverErrorDF
+  .select(hour(from_utc_timestamp(col("time"), "GMT")).alias("hour"))
+  .groupBy("hour")
+  .count()
+  .orderBy("hour")
+)
+
+display(countsDF)
+
+(serverErrorDF
+  .write
+  .mode("overwrite") # overwrites a file if it already exists
+  .parquet("/tmp/log20170329/serverErrorDF.parquet")
+)
+
+
+##EXERCISE 01
+
+from pyspark.sql.functions import col
+
+ipCountDF = (logDF
+  .select(col("ip")).alias("ip")
+  .groupBy("ip")
+  .count()
+  .orderBy("count", ascending=False)
+)
+display(ipCountDF.take(20))
+
+(ipCountDF
+  .write
+  .mode('overwrite')
+  .parquet('/tmp/ipCount.parquet')
+)
