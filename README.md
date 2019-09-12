@@ -79,3 +79,15 @@ metadata
 Step 3: Compare Solution Performance
 
 Compare the dafault schema inference to applying a user defined schema using the %timeit function. Which completed faster? Which triggered more jobs? Why?
+
+Exercise 05:Working with Corrupt Records
+
+Step 1: Diagnose the Problem
+
+Import the data used in the last lesson, which is located at /mnt/training/UbiqLog4UCI/14_F/log*. Import the corrupt records in a new column SMSCorrupt.
+
+Save only the columns SMS and SMSCorrupt to the new DataFrame SMSCorruptDF.
+
+Step 2: Use badRecordsPath
+
+Use the badRecordsPath option to save corrupt records to the directory /tmp/corruptSMS.
