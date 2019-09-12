@@ -1,0 +1,39 @@
+
+print(dbutils.fs.head('/mnt/training/UbiqLog4UCI/14_F/log_1-6-2014.txt', 200))
+
+smartphoneDF = spark.read.json('/mnt/training/UbiqLog4UCI/14_F/log*')
+
+smartphoneDF.printSchema()
+
+from pyspark.sql.types import StructType, StructField, StringType
+from pyspark.sql.functions import col
+
+schema = StructType([
+  StructField('SMS', StringType(), True)
+])
+
+from pyspark.sql.types import StructType, StructField, StringType
+from pyspark.sql.functions import col
+
+schema = StructType([
+  StructField('SMS', StringType(), True)
+])
+
+SMSDF = (spark.read.schema(schema).json('/mnt/training/UbiqLog4UCI/14_F/log*').filter(col('SMS').isNotNull()))
+
+schema2 = StructType([
+  StructField("SMS", StructType([
+    StructField("Address",StringType(),True),
+    StructField("date",StringType(),True),
+    StructField("metadata", StructType([
+      StructField("name",StringType(), True)
+    ]), True),
+  ]), True)
+])
+
+SMSDF2 = spark.read.schema(schema2).json('/mnt/training/UbiqLog4UCI/14_F/log*').filter(col("SMS").isNotNull())
+
+
+%timeit SMSDF = spark.read.schema(schema2).json("/mnt/training/UbiqLog4UCI/14_F/log*").count()
+
+%timeit SMSDF = spark.read.json("/mnt/training/UbiqLog4UCI/14_F/log*").count()
