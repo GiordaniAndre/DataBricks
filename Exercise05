@@ -1,0 +1,18 @@
+from pyspark.sql.functions import col
+
+SMSCorruptDF = (spark.read
+  .option("mode", "PERMISSIVE")
+  .option("columnNameOfCorruptRecord", "SMSCorrupt")
+  .json("/mnt/training/UbiqLog4UCI/14_F/log*")
+  .select("SMSCorrupt", "SMS")
+  .filter(col("SMSCorrupt").isNotNull())
+)
+
+display(SMSCorruptDF)
+
+SMSCorruptDF2 = (spark.read
+  .option("badRecordsPath", "/tmp/corruptSMS")
+  .json("/mnt/training/UbiqLog4UCI/14_F/log*")
+)
+
+display(SMSCorruptDF2)
