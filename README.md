@@ -42,3 +42,40 @@ Import the data with options and save it to wikiWithOptionsDF. Display the resul
 The header 
 
 The delimiter 
+
+
+
+Exercise 03: Exploring JSON Data
+Smartphone data from UCI Machine Learning Repository is available under /mnt/training/UbiqLog4UCI. This is log data from the open source project Ubiqlog.
+
+Import this data and define your own schema.
+
+Step 1: Import the Data
+Import data from /mnt/training/14_F/log*. (This is the log files from a given user.)
+
+Look at the head of one file from the data set. Use /mnt/training/UbiqLog4UCI/14_F/log_1-6-2014.txt.
+
+Step 2: Explore the Inferred Schema
+
+Print the schema to get a sense for the data.
+
+Exercise 04: Creating a User Defined Schema
+
+Step 1: Set Up Your workflow. Often the hardest part of a coding challenge is setting up a workflow to get continuous feedback on what you develop.
+
+Start with the import statements you need, including functions from two main packages:
+
+Step 2: Create the Full Schema for SMS
+Define the Schema for the following fields in the StructType SMS and name it schema2. Apply it to a new DataFrame SMSDF2:
+
+
+Address
+
+date
+
+metadata
+
+
+Step 3: Compare Solution Performance
+
+Compare the dafault schema inference to applying a user defined schema using the %timeit function. Which completed faster? Which triggered more jobs? Why?
